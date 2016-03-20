@@ -22,7 +22,33 @@
         android:layout_height="wrap_content"
         android:text="Register"
         android:id="@+id/to_register"
-        android:layout_below="@+id/editText2"
         android:layout_centerHorizontal="true"
         android:onClick="goToRegisterPage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/emailLogin"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="197dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/passwordLogin"
+        android:layout_below="@+id/emailLogin"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:id="@+id/buttonLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/passwordLogin"/>
 </RelativeLayout>
