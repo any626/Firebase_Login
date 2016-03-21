@@ -9,12 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
-public class MainActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     private Firebase mFirebase;
+
+    private EditText mEmail;
+
+    private EditText mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +31,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Firebase myFirebase = new Firebase(getResources().getString(R.string.firebase_url));
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mEmail = (EditText) findViewById(R.id.emailLogin);
+        mPassword = (EditText) findViewById(R.id.passwordLogin);
+
+        mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
+        findViewById(R.id.buttonLogin).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+                signInUser(email, password);
             }
         });
     }
@@ -59,6 +70,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToRegisterPage(View view){
         Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    private void signInUser(String email, String password){
+        mFirebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("User Id: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                goToLoggedInActivity();
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                // do something here
+            }
+        });
+    }
+
+    private void goToLoggedInActivity(){
+        Intent intent = new Intent(this, LoggedInActivity.class);
         startActivity(intent);
     }
 }
